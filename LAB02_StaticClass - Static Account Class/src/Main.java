@@ -60,7 +60,7 @@ public class Main {
         int slgLenh = Integer.parseInt(arr_Transactions[0]);
         int index = 1;
         for(int i = 1; i <= slgLenh; i++){
-            if(checkStringLetter(arr_Transactions[index])){
+            if(!checkStringDigit(arr_Transactions[index])){
                 if(arr_Transactions[index].equals("rut")){
                     int id = Integer.parseInt(arr_Transactions[index+1]);
                     long tien = Long.parseLong(arr_Transactions[index+2]);
@@ -76,7 +76,7 @@ public class Main {
                     int id = Integer.parseInt(arr_Transactions[index+1]);
                     long tien = Long.parseLong(arr_Transactions[index+2]);
                     list_acc.get(id-1).napTien(tien);
-                    index += 2;
+                    index += 3;
                 }
             }
         }
