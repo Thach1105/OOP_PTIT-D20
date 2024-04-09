@@ -1,13 +1,11 @@
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Employee clerk1  = new Employee("Grocery Bill");
+        Employee clerk1 = new Employee("Grocery Bill");
         GroceryBill gb = new GroceryBill(clerk1);
         gb.add(new Item("item 1", 2.3, 0));
-        gb.add((new Item("item 2", 3.45, 0)));
+        gb.add(new Item("item 2", 3.45, 0));
         gb.toString();
         System.out.println();
         Employee clerk2 = new Employee("Discount Bill");
@@ -17,65 +15,68 @@ public class Main {
         db.add(new Item("item 5", 50, 35));
         db.toString();
     }
-
 }
 class Item{
-    public String name;
-    public double price;
-    public double discount;
-
+    private String name;
+    private double price;
+    private double discount;
     public Item(String name, double price, double discount){
         this.name = name;
         this.price = price;
         this.discount = discount;
     }
-    public double getPrice(){
-        price *= 1.00;
-        return this.price;
+
+    public double getPrice() {
+        return price;
     }
-    public double getDiscount(){
+
+    public double getDiscount() {
         return discount;
     }
-    public String toString(){
-        System.out.printf("   %s $%.2f (-$%.2f)\n", name, price, discount);
+
+    @Override
+    public String toString() {
+        System.out.printf("%s $%.2f (-$%.2f)\n", name, price, discount);
         return "";
     }
 }
-
 class Employee{
-    public String name;
+    private String name;
     public Employee(String name){
         this.name = name;
     }
-    public String getName(){
-        return this.name;
+
+    public String getName() {
+        return name;
     }
 }
-
 class GroceryBill{
     private Employee clerk;
     protected ArrayList<Item> receipt;
     private double total;
-
     public GroceryBill(Employee clerk){
         this.clerk = clerk;
+        total = 0;
         receipt = new ArrayList<Item>();
     }
-
-    public void add(Item i){
+    public void add (Item i){
+        total += i.getPrice();
         receipt.add(i);
-        total += i.price;
     }
-    public double getTotal(){
+
+    public double getTotal() {
         return total;
     }
-    public Employee getClerk(){
+
+    public Employee getClerk() {
         return clerk;
     }
 
-    public String toString(){
+    @Override
+    public String toString() {
         System.out.println("items:");
-        for(Item i : receipt){
+        for (Item i : receipt){
+            System.out.print("   ");
             i.toString();
         }
         System.out.printf("total: $%.2f\n", total);
@@ -83,27 +84,34 @@ class GroceryBill{
         return "";
     }
 }
+
 class DiscountBill extends GroceryBill{
-    private double discountAmount;
     private double sub_total;
+    private double discountAmount;
+    private double total;
     public DiscountBill(Employee clerk) {
         super(clerk);
-        sub_total = 0;
+        this.sub_total = 0;
+        this.discountAmount = 0;
     }
     public void add(Item i){
         receipt.add(i);
-        discountAmount += i.discount;
-        sub_total += i.price;
+        sub_total += i.getPrice();
+        discountAmount += i.getDiscount();
+        total = sub_total - discountAmount;
     }
-    public String toString(){
+
+    @Override
+    public String toString() {
         System.out.println("items:");
         for(Item i : receipt){
+            System.out.print("   ");
             i.toString();
         }
         System.out.printf("sub-total: $%.2f\n", sub_total);
         System.out.printf("discount: $%.2f\n", discountAmount);
-        System.out.printf("total: $%.2f\n", (sub_total-discountAmount));
-        System.out.printf("Clerk: %s\n", getClerk().getName());
+        System.out.printf("total: $%.2f\n", total);
+        System.out.printf("Clerk: %s\n", this.getClerk().getName());
         return "";
     }
 }

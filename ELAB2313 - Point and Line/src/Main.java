@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -22,7 +23,7 @@ public class Main {
             Point p = new Point(inputString.get(i), Double.parseDouble(dou_list[0]), Double.parseDouble(dou_list[1]), Double.parseDouble(dou_list[2]));
             points.add(p);
         }
-        if(check == false){
+        if(!check){
             System.out.println("invalid input");
             return;
         }
@@ -45,7 +46,7 @@ public class Main {
         }
     }
     public static boolean checkNamePoint(String s){
-        if(s.length() > 1) return false;
+        if(s.length() != 1) return false;
         return Character.isLetter(s.charAt(0));
     }
 
@@ -65,6 +66,19 @@ class Point{
         this.y = y;
         this.z = z;
         this.namePoint = namePoint;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point point = (Point) o;
+        return Double.compare(x, point.x) == 0 && Double.compare(y, point.y) == 0 && Double.compare(z, point.z) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
     }
 
     public String getNamePoint() {
@@ -96,7 +110,7 @@ class Line{
         this.p2 = p2;
     }
     public void getDistance(){
-        if(String.valueOf(p1.getX()).equals(String.valueOf(p2.getX())) && String.valueOf(p1.getY()).equals(String.valueOf(p2.getY())) && String.valueOf(p1.getZ()).equals(String.valueOf(p2.getZ())))
+        if(p1.equals(p2))
         {
             System.out.printf("Line %s%s: same point\n", p1.getNamePoint(), p2.getNamePoint());
             return;
