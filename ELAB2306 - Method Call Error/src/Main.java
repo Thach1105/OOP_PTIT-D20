@@ -6,31 +6,28 @@ class MyMethods {
         try {
             m2(x);
             System.out.println(1);
+        } catch (IOException e) {
+            System.out.println(2);
         } catch (ArithmeticException e) {
             System.out.println(3);
-        } catch (Exception e) {
-            System.out.println(2);
         }
     }
 
-    public static void m2(int x) throws IOException {
+    public static void m2(int x) throws ArithmeticException, IOException {
         System.out.println(4);
         if (x == 1)
             throw new IOException();
         if (x == 0)
             throw new ArithmeticException();
-        System.out.println(5);
+        if (x == 2) System.out.println(5);
     }
 }
-
 public class Main {
     public static void main(String[] args) {
-       Scanner scanner = new Scanner(System.in);
-       while (scanner.hasNextInt()){
-           int x = scanner.nextInt();
-           MyMethods.m(x);
-       }
-
-
+        Scanner sc = new Scanner(System.in);
+        int x = Integer.parseInt(sc.nextLine());
+        if(x==0) MyMethods.m(1);
+        else if (x==1) MyMethods.m(0);
+        else if (x==2) MyMethods.m(2);
     }
 }

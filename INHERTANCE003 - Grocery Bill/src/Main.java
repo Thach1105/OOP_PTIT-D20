@@ -6,14 +6,13 @@ public class Main {
         GroceryBill gb = new GroceryBill(clerk1);
         gb.add(new Item("item 1", 2.3, 0));
         gb.add(new Item("item 2", 3.45, 0));
-        gb.toString();
-        System.out.println();
+        System.out.println(gb.toString());
         Employee clerk2 = new Employee("Discount Bill");
         DiscountBill db = new DiscountBill(clerk2);
         db.add(new Item("item 3", 20, 15));
         db.add(new Item("item 4", 40, 35));
-        db.add(new Item("item 5", 50, 35));
-        db.toString();
+        db.add(new Item("item 5", 50, 55));
+        System.out.print(db.toString());
     }
 }
 class Item{
@@ -36,8 +35,7 @@ class Item{
 
     @Override
     public String toString() {
-        System.out.printf("%s $%.2f (-$%.2f)\n", name, price, discount);
-        return "";
+        return String.format("   %s $%.2f (-$%.2f)",this.name, this.price, this.discount);
     }
 }
 class Employee{
@@ -74,14 +72,13 @@ class GroceryBill{
 
     @Override
     public String toString() {
-        System.out.println("items:");
+        StringBuilder ans = new StringBuilder("items:\n");
         for (Item i : receipt){
-            System.out.print("   ");
-            i.toString();
+            ans.append(i.toString()).append("\n");
         }
-        System.out.printf("total: $%.2f\n", total);
-        System.out.printf("Clerk: %s\n", clerk.getName());
-        return "";
+        ans.append("total: ").append(String.format("$%.2f",getTotal())).append("\n");
+        ans.append("Clerk: ").append(getClerk().getName()).append("\n");
+        return ans.toString();
     }
 }
 
@@ -103,15 +100,14 @@ class DiscountBill extends GroceryBill{
 
     @Override
     public String toString() {
-        System.out.println("items:");
-        for(Item i : receipt){
-            System.out.print("   ");
-            i.toString();
+        StringBuilder ans = new StringBuilder("items:\n");
+        for(Item i : this.receipt){
+            ans.append(i.toString()).append("\n");
         }
-        System.out.printf("sub-total: $%.2f\n", sub_total);
-        System.out.printf("discount: $%.2f\n", discountAmount);
-        System.out.printf("total: $%.2f\n", total);
-        System.out.printf("Clerk: %s\n", this.getClerk().getName());
-        return "";
+        ans.append("sub-total: ").append(String.format("$%.2f",this.sub_total)).append("\n");
+        ans.append("discount: ").append(String.format("$%.2f",this.discountAmount)).append("\n");
+        ans.append("total: ").append(String.format("$%.2f",this.total)).append("\n");
+        ans.append("Clerk: ").append(getClerk().getName());
+        return ans.toString();
     }
 }
